@@ -14,6 +14,161 @@ const className = Astro.props.class;
 </div>
 
 <script>
+type MermaidModule = typeof import("mermaid");
+type MermaidState = {
+	themeObserver?: MutationObserver;
+	swupHookRegistered?: boolean;
+};
+
+const mermaidWindow = window as Window & {
+	__fuwariMermaidModule?: Promise<MermaidModule>;
+	__fuwariMermaidState?: MermaidState;
+};
+
+function getMermaidState(): MermaidState {
+	if (!mermaidWindow.__fuwariMermaidState) {
+		mermaidWindow.__fuwariMermaidState = {};
+	}
+	return mermaidWindow.__fuwariMermaidState;
+}
+
+function loadMermaid() {
+	if (!mermaidWindow.__fuwariMermaidModule) {
+		mermaidWindow.__fuwariMermaidModule = import("mermaid");
+	}
+	return mermaidWindow.__fuwariMermaidModule;
+}
+
+function isDarkMode() {
+	return document.documentElement.classList.contains("dark");
+}
+
+function extractMermaidSource(preElement: HTMLElement) {
+	return Array.from(preElement.querySelectorAll(".code"))
+		.map((line) => line.textContent ?? "")
+		.join("\n")
+		.trim();
+}
+
+function upgradeMermaidBlocks() {
+	const mermaidPreBlocks = document.querySelectorAll<HTMLElement>(
+		'.custom-md pre[data-language="mermaid"]',
+	);
+
+	mermaidPreBlocks.forEach((preElement) => {
+		const source = extractMermaidSource(preElement);
+		if (!source) {
+			return;
+		}
+
+		const wrapper = document.createElement("div");
+		wrapper.className = "mermaid-diagram";
+		wrapper.dataset.source = source;
+
+		const expressiveCodeWrapper = preElement.closest(".expressive-code");
+		if (expressiveCodeWrapper) {
+			expressiveCodeWrapper.replaceWith(wrapper);
+			return;
+		}
+
+		preElement.replaceWith(wrapper);
+	});
+}
+
+async function renderMermaidDiagrams() {
+	upgradeMermaidBlocks();
+
+	const diagramWrappers = document.querySelectorAll<HTMLElement>(
+		".custom-md .mermaid-diagram[data-source]",
+	);
+
+	if (diagramWrappers.length === 0) {
+		return;
+	}
+
+	const mermaidModule = await loadMermaid();
+	const mermaid = mermaidModule.default;
+
+	mermaid.initialize({
+		startOnLoad: false,
+		securityLevel: "loose",
+		theme: isDarkMode() ? "dark" : "default",
+		fontFamily: "Roboto, sans-serif",
+	});
+
+	for (const [index, wrapper] of Array.from(diagramWrappers).entries()) {
+		const source = wrapper.dataset.source;
+		if (!source) {
+			continue;
+		}
+
+		try {
+			const renderId = `mermaid-${index}-${Math.random().toString(36).slice(2, 10)}`;
+			const { svg, bindFunctions } = await mermaid.render(renderId, source);
+			wrapper.innerHTML = svg;
+			wrapper.dataset.rendered = "true";
+			bindFunctions?.(wrapper);
+		} catch (error) {
+			console.error("Failed to render Mermaid diagram:", error);
+			wrapper.dataset.rendered = "error";
+			wrapper.innerHTML = `
+				<div class="mermaid-error">
+					Mermaid 图表渲染失败，请检查语法。
+				</div>
+			`;
+		}
+	}
+}
+
+function scheduleMermaidRender() {
+	void renderMermaidDiagrams();
+}
+
+function setupMermaidThemeObserver() {
+	const state = getMermaidState();
+	if (state.themeObserver) {
+		return;
+	}
+
+	const observer = new MutationObserver(() => {
+		scheduleMermaidRender();
+	});
+
+	observer.observe(document.documentElement, {
+		attributes: true,
+		attributeFilter: ["class"],
+	});
+
+	state.themeObserver = observer;
+}
+
+function setupMermaidSwupHook() {
+	const state = getMermaidState();
+	if (state.swupHookRegistered) {
+		return;
+	}
+
+	const registerPageViewHook = () => {
+		if (!window.swup?.hooks || state.swupHookRegistered) {
+			return;
+		}
+		window.swup.hooks.on("page:view", scheduleMermaidRender);
+		state.swupHookRegistered = true;
+	};
+
+	if (window.swup?.hooks) {
+		registerPageViewHook();
+	} else {
+		document.addEventListener("swup:enable", registerPageViewHook, {
+			once: true,
+		});
+	}
+}
+
+setupMermaidThemeObserver();
+setupMermaidSwupHook();
+scheduleMermaidRender();
+
 document.addEventListener("click", function (e: MouseEvent) {
     const target = e.target as Element | null;
     if (target && target.classList.contains("copy-btn")) {
