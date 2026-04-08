@@ -1,0 +1,66 @@
+<svg width="1280" height="460" viewBox="0 0 1280 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">ZipList entry 结构示意图</title>
+  <desc id="desc">展示单个 ZipList entry 的组成：previous_entry_length、encoding 和 content，并说明 previous_entry_length 如何支持反向遍历。</desc>
+  <style>
+    .title { font: 700 28px "JetBrains Mono", "JetBrains Mono Variable", monospace; fill: #1f2937; }
+    .subtitle { font: 500 18px "JetBrains Mono", "JetBrains Mono Variable", monospace; fill: #4b5563; }
+    .header { font: 600 20px "JetBrains Mono", "JetBrains Mono Variable", monospace; fill: #111827; }
+    .small { font: 500 15px "JetBrains Mono", "JetBrains Mono Variable", monospace; fill: #374151; }
+    .stroke { stroke: #2f3b4a; stroke-width: 3; }
+    .guide { stroke: #c24141; stroke-width: 2.5; }
+    .box { fill: #ffffff; stroke: #2f3b4a; stroke-width: 3; }
+    .panel { fill: #fafafa; stroke: #e5e7eb; stroke-width: 2; rx: 16; }
+    .note { fill: #fef2f2; stroke: #c24141; stroke-width: 2; rx: 10; }
+  </style>
+
+  <defs>
+    <marker id="arrow-dark-e" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2f3b4a"/>
+    </marker>
+    <marker id="arrow-red-e" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c24141"/>
+    </marker>
+  </defs>
+
+  <rect x="16" y="16" width="1248" height="428" rx="20" fill="#ffffff"/>
+  <rect class="panel" x="32" y="32" width="1216" height="396"/>
+
+  <text class="title" x="56" y="72">单个 entry 的结构</text>
+  <text class="subtitle" x="56" y="102">每个节点都由 previous_entry_length、encoding 和 content 三部分组成</text>
+
+  <rect class="box" x="84" y="150" width="340" height="88"/>
+  <rect class="box" x="424" y="150" width="260" height="88"/>
+  <rect class="box" x="684" y="150" width="420" height="88"/>
+
+  <text class="header" x="254" y="184" text-anchor="middle">previous_entry_length</text>
+  <text class="small" x="254" y="212" text-anchor="middle">前一个 entry 的长度</text>
+
+  <text class="header" x="554" y="184" text-anchor="middle">encoding</text>
+  <text class="small" x="554" y="212" text-anchor="middle">当前数据的类型与长度</text>
+
+  <text class="header" x="894" y="184" text-anchor="middle">content</text>
+  <text class="small" x="894" y="212" text-anchor="middle">真正存放的数据内容</text>
+
+  <rect class="note" x="84" y="274" width="340" height="104"/>
+  <text class="small" x="104" y="308">- 前一节点 &lt; 254B：本字段占 1B</text>
+  <text class="small" x="104" y="336">- 前一节点 &gt;= 254B：本字段占 5B</text>
+  <text class="small" x="104" y="364">  首字节为 0xFE，后 4B 存前一节点长度</text>
+
+  <rect class="note" x="444" y="274" width="240" height="104"/>
+  <text class="small" x="464" y="308">- 决定当前节点是整数</text>
+  <text class="small" x="464" y="336">  还是字符串</text>
+  <text class="small" x="464" y="364">- 也决定 content 应按多少字节解析</text>
+
+  <rect class="note" x="704" y="274" width="400" height="104"/>
+  <text class="small" x="724" y="308">- 如果是字符串，这里存字符串字节</text>
+  <text class="small" x="724" y="336">- 如果是整数，这里存整数编码后的值</text>
+  <text class="small" x="724" y="364">- content 的实际长度由 encoding 决定</text>
+
+  <line class="guide" x1="254" y1="238" x2="254" y2="274" marker-end="url(#arrow-red-e)"/>
+  <line class="guide" x1="554" y1="238" x2="554" y2="274" marker-end="url(#arrow-red-e)"/>
+  <line class="guide" x1="894" y1="238" x2="894" y2="274" marker-end="url(#arrow-red-e)"/>
+
+  <line class="stroke" x1="254" y1="130" x2="254" y2="104" marker-end="url(#arrow-dark-e)"/>
+  <text class="small" x="398" y="126">拿到当前节点地址后，可用当前地址减去 previous_entry_length</text>
+  <text class="small" x="398" y="148">直接跳到前一个节点，这就是 ZipList 支持反向遍历的关键。</text>
+</svg>

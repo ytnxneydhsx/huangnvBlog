@@ -1,0 +1,88 @@
+<svg width="1320" height="560" viewBox="0 0 1320 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">intset 最终结构示意图</title>
+  <desc id="desc">展示整数集合 [1, 3, 10000000] 在 intset 中的最终内存布局，包括 encoding、length，以及 contents 这段连续字节区一共 12 个字节，其中每个元素占 4 个字节。</desc>
+  <style>
+    .title { font: 700 28px "JetBrains Mono", "JetBrains Mono Variable", monospace; fill: #1f2937; }
+    .subtitle { font: 500 18px "JetBrains Mono", "JetBrains Mono Variable", monospace; fill: #4b5563; }
+    .text { font: 600 18px "JetBrains Mono", "JetBrains Mono Variable", monospace; fill: #111827; }
+    .small { font: 500 14px "JetBrains Mono", "JetBrains Mono Variable", monospace; fill: #374151; }
+    .brace { font: 600 16px "JetBrains Mono", "JetBrains Mono Variable", monospace; fill: #111827; }
+    .stroke { stroke: #4b5563; stroke-width: 3; }
+    .meta { fill: #f3f4f6; }
+    .data { fill: #ffffff; }
+    .bytes { fill: #eef2ff; }
+    .panel { fill: #fafafa; stroke: #e5e7eb; stroke-width: 2; rx: 16; }
+  </style>
+
+  <rect x="16" y="16" width="1288" height="528" rx="20" fill="#ffffff"/>
+  <rect class="panel" x="32" y="32" width="1256" height="496"/>
+
+  <text class="title" x="60" y="70">intset 最终结构</text>
+  <text class="subtitle" x="60" y="100">示例集合：[1, 3, 10000000]</text>
+  <text class="subtitle" x="520" y="100">10000000 超出 int16 范围，因此整体升级到 INTSET_ENC_INT32</text>
+
+  <rect class="meta stroke" x="60" y="140" width="180" height="96"/>
+  <rect class="meta stroke" x="240" y="140" width="180" height="96"/>
+  <rect class="data stroke" x="420" y="140" width="264" height="96"/>
+  <rect class="data stroke" x="684" y="140" width="264" height="96"/>
+  <rect class="data stroke" x="948" y="140" width="264" height="96"/>
+
+  <text class="text" x="150" y="178" text-anchor="middle">encoding</text>
+  <text class="text" x="150" y="206" text-anchor="middle">= 4</text>
+  <text class="small" x="150" y="226" text-anchor="middle">INTSET_ENC_INT32, 4B</text>
+
+  <text class="text" x="330" y="178" text-anchor="middle">length</text>
+  <text class="text" x="330" y="206" text-anchor="middle">= 3</text>
+  <text class="small" x="330" y="226" text-anchor="middle">元素个数, 4B</text>
+
+  <text class="text" x="552" y="176" text-anchor="middle">element 0 = 1</text>
+  <text class="small" x="552" y="206" text-anchor="middle">占 4 个 contents 字节</text>
+
+  <text class="text" x="816" y="176" text-anchor="middle">element 1 = 3</text>
+  <text class="small" x="816" y="206" text-anchor="middle">占 4 个 contents 字节</text>
+
+  <text class="text" x="1080" y="176" text-anchor="middle">element 2 = 10000000</text>
+  <text class="small" x="1080" y="206" text-anchor="middle">占 4 个 contents 字节</text>
+
+  <path class="stroke" fill="none" d="M60 262 q0 16 16 16 h164 q16 0 16 16 q0 -16 16 -16 h132 q16 0 16 -16"/>
+  <path class="stroke" fill="none" d="M420 262 q0 16 16 16 h248 q16 0 16 16 q0 -16 16 -16 h496 q16 0 16 -16"/>
+
+  <text class="brace" x="240" y="322" text-anchor="middle">header 8B</text>
+  <text class="brace" x="816" y="322" text-anchor="middle">contents 12B = 3 elements × 4B</text>
+
+  <text class="subtitle" x="60" y="372">contents 的底层视角：连续的 12 个字节</text>
+
+  <rect class="bytes stroke" x="60" y="400" width="96" height="72"/>
+  <rect class="bytes stroke" x="156" y="400" width="96" height="72"/>
+  <rect class="bytes stroke" x="252" y="400" width="96" height="72"/>
+  <rect class="bytes stroke" x="348" y="400" width="96" height="72"/>
+  <rect class="bytes stroke" x="444" y="400" width="96" height="72"/>
+  <rect class="bytes stroke" x="540" y="400" width="96" height="72"/>
+  <rect class="bytes stroke" x="636" y="400" width="96" height="72"/>
+  <rect class="bytes stroke" x="732" y="400" width="96" height="72"/>
+  <rect class="bytes stroke" x="828" y="400" width="96" height="72"/>
+  <rect class="bytes stroke" x="924" y="400" width="96" height="72"/>
+  <rect class="bytes stroke" x="1020" y="400" width="96" height="72"/>
+  <rect class="bytes stroke" x="1116" y="400" width="96" height="72"/>
+
+  <text class="small" x="108" y="442" text-anchor="middle">byte 0</text>
+  <text class="small" x="204" y="442" text-anchor="middle">byte 1</text>
+  <text class="small" x="300" y="442" text-anchor="middle">byte 2</text>
+  <text class="small" x="396" y="442" text-anchor="middle">byte 3</text>
+  <text class="small" x="492" y="442" text-anchor="middle">byte 4</text>
+  <text class="small" x="588" y="442" text-anchor="middle">byte 5</text>
+  <text class="small" x="684" y="442" text-anchor="middle">byte 6</text>
+  <text class="small" x="780" y="442" text-anchor="middle">byte 7</text>
+  <text class="small" x="876" y="442" text-anchor="middle">byte 8</text>
+  <text class="small" x="972" y="442" text-anchor="middle">byte 9</text>
+  <text class="small" x="1068" y="442" text-anchor="middle">byte 10</text>
+  <text class="small" x="1164" y="442" text-anchor="middle">byte 11</text>
+
+  <path class="stroke" fill="none" d="M60 486 q0 14 14 14 h164 q14 0 14 14 q0 -14 14 -14 h164 q14 0 14 -14"/>
+  <path class="stroke" fill="none" d="M444 486 q0 14 14 14 h164 q14 0 14 14 q0 -14 14 -14 h164 q14 0 14 -14"/>
+  <path class="stroke" fill="none" d="M828 486 q0 14 14 14 h164 q14 0 14 14 q0 -14 14 -14 h164 q14 0 14 -14"/>
+
+  <text class="brace" x="252" y="540" text-anchor="middle">element 0 使用 contents[0..3]</text>
+  <text class="brace" x="636" y="540" text-anchor="middle">element 1 使用 contents[4..7]</text>
+  <text class="brace" x="1020" y="540" text-anchor="middle">element 2 使用 contents[8..11]</text>
+</svg>

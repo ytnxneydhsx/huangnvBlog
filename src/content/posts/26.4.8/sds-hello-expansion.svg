@@ -1,0 +1,100 @@
+<svg width="1780" height="460" viewBox="0 0 1780 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">SDS hello 扩容前后示意图</title>
+  <desc id="desc">左侧展示 hello 初始状态，右侧展示追加 world 并扩容后的状态，包含 len、alloc、flags、buf 和 unused 区域。</desc>
+  <style>
+    .title { font: 700 28px "JetBrains Mono", "JetBrains Mono Variable", monospace; fill: #1f2937; }
+    .subtitle { font: 500 18px "JetBrains Mono", "JetBrains Mono Variable", monospace; fill: #4b5563; }
+    .cell-text { font: 500 16px "JetBrains Mono", "JetBrains Mono Variable", monospace; fill: #111827; }
+    .note { font: 500 16px "JetBrains Mono", "JetBrains Mono Variable", monospace; fill: #374151; }
+    .brace-label { font: 600 16px "JetBrains Mono", "JetBrains Mono Variable", monospace; fill: #111827; }
+    .stroke { stroke: #4b5563; stroke-width: 3; }
+    .header { fill: #f3f4f6; }
+    .used { fill: #ffffff; }
+    .unused { fill: #dbeafe; }
+    .panel { fill: #fafafa; stroke: #e5e7eb; stroke-width: 2; rx: 16; }
+  </style>
+
+  <rect x="12" y="12" width="1756" height="436" rx="20" fill="#ffffff"/>
+
+  <rect class="panel" x="24" y="24" width="476" height="412"/>
+  <text class="title" x="48" y="62">初始状态</text>
+  <text class="subtitle" x="48" y="92">sdshdr8, len = 5, alloc = 5</text>
+
+  <rect class="header stroke" x="48" y="128" width="48" height="84"/>
+  <rect class="header stroke" x="96" y="128" width="48" height="84"/>
+  <rect class="header stroke" x="144" y="128" width="48" height="84"/>
+  <rect class="used stroke" x="192" y="128" width="48" height="84"/>
+  <rect class="used stroke" x="240" y="128" width="48" height="84"/>
+  <rect class="used stroke" x="288" y="128" width="48" height="84"/>
+  <rect class="used stroke" x="336" y="128" width="48" height="84"/>
+  <rect class="used stroke" x="384" y="128" width="48" height="84"/>
+  <rect class="used stroke" x="432" y="128" width="48" height="84"/>
+
+  <text class="cell-text" x="72" y="176" text-anchor="middle">len</text>
+  <text class="cell-text" x="72" y="196" text-anchor="middle">1B</text>
+  <text class="cell-text" x="120" y="176" text-anchor="middle">alloc</text>
+  <text class="cell-text" x="120" y="196" text-anchor="middle">1B</text>
+  <text class="cell-text" x="168" y="176" text-anchor="middle">flags</text>
+  <text class="cell-text" x="168" y="196" text-anchor="middle">1B</text>
+  <text class="cell-text" x="216" y="181" text-anchor="middle">h</text>
+  <text class="cell-text" x="264" y="181" text-anchor="middle">e</text>
+  <text class="cell-text" x="312" y="181" text-anchor="middle">l</text>
+  <text class="cell-text" x="360" y="181" text-anchor="middle">l</text>
+  <text class="cell-text" x="408" y="181" text-anchor="middle">o</text>
+  <text class="cell-text" x="456" y="181" text-anchor="middle">\0</text>
+
+  <path class="stroke" fill="none" d="M48 250 q0 18 18 18 h36 q18 0 18 18 q0 -18 18 -18 h36 q18 0 18 -18"/>
+  <path class="stroke" fill="none" d="M192 250 q0 18 18 18 h108 q18 0 18 18 q0 -18 18 -18 h108 q18 0 18 -18"/>
+  <text class="brace-label" x="120" y="314" text-anchor="middle">header 3B</text>
+  <text class="brace-label" x="336" y="314" text-anchor="middle">used buf 6B</text>
+  <text class="note" x="48" y="360">总占用示意：3B 头部 + 6B buf（含 \0）= 9B</text>
+
+  <rect class="panel" x="516" y="24" width="1240" height="412"/>
+  <text class="title" x="540" y="62">追加 world 后</text>
+  <text class="subtitle" x="540" y="92">sdshdr8, len = 10, alloc = 20</text>
+  <text class="subtitle" x="1100" y="92">小于 1MB，按两倍预分配</text>
+
+  <rect class="header stroke" x="540" y="128" width="48" height="84"/>
+  <rect class="header stroke" x="588" y="128" width="48" height="84"/>
+  <rect class="header stroke" x="636" y="128" width="48" height="84"/>
+  <rect class="used stroke" x="684" y="128" width="48" height="84"/>
+  <rect class="used stroke" x="732" y="128" width="48" height="84"/>
+  <rect class="used stroke" x="780" y="128" width="48" height="84"/>
+  <rect class="used stroke" x="828" y="128" width="48" height="84"/>
+  <rect class="used stroke" x="876" y="128" width="48" height="84"/>
+  <rect class="used stroke" x="924" y="128" width="48" height="84"/>
+  <rect class="used stroke" x="972" y="128" width="48" height="84"/>
+  <rect class="used stroke" x="1020" y="128" width="48" height="84"/>
+  <rect class="used stroke" x="1068" y="128" width="48" height="84"/>
+  <rect class="used stroke" x="1116" y="128" width="48" height="84"/>
+  <rect class="used stroke" x="1164" y="128" width="48" height="84"/>
+  <rect class="unused stroke" x="1212" y="128" width="480" height="84"/>
+
+  <text class="cell-text" x="564" y="176" text-anchor="middle">len</text>
+  <text class="cell-text" x="564" y="196" text-anchor="middle">1B</text>
+  <text class="cell-text" x="612" y="176" text-anchor="middle">alloc</text>
+  <text class="cell-text" x="612" y="196" text-anchor="middle">1B</text>
+  <text class="cell-text" x="660" y="176" text-anchor="middle">flags</text>
+  <text class="cell-text" x="660" y="196" text-anchor="middle">1B</text>
+  <text class="cell-text" x="708" y="181" text-anchor="middle">h</text>
+  <text class="cell-text" x="756" y="181" text-anchor="middle">e</text>
+  <text class="cell-text" x="804" y="181" text-anchor="middle">l</text>
+  <text class="cell-text" x="852" y="181" text-anchor="middle">l</text>
+  <text class="cell-text" x="900" y="181" text-anchor="middle">o</text>
+  <text class="cell-text" x="948" y="181" text-anchor="middle">w</text>
+  <text class="cell-text" x="996" y="181" text-anchor="middle">o</text>
+  <text class="cell-text" x="1044" y="181" text-anchor="middle">r</text>
+  <text class="cell-text" x="1092" y="181" text-anchor="middle">l</text>
+  <text class="cell-text" x="1140" y="181" text-anchor="middle">d</text>
+  <text class="cell-text" x="1188" y="181" text-anchor="middle">\0</text>
+  <text class="cell-text" x="1452" y="181" text-anchor="middle">unused 10B</text>
+
+  <path class="stroke" fill="none" d="M540 250 q0 18 18 18 h36 q18 0 18 18 q0 -18 18 -18 h36 q18 0 18 -18"/>
+  <path class="stroke" fill="none" d="M684 250 q0 18 18 18 h228 q18 0 18 18 q0 -18 18 -18 h228 q18 0 18 -18"/>
+  <path class="stroke" fill="none" d="M1212 250 q0 18 18 18 h204 q18 0 18 18 q0 -18 18 -18 h204 q18 0 18 -18"/>
+
+  <text class="brace-label" x="612" y="314" text-anchor="middle">header 3B</text>
+  <text class="brace-label" x="948" y="314" text-anchor="middle">used buf 11B</text>
+  <text class="brace-label" x="1452" y="314" text-anchor="middle">unused 10B</text>
+  <text class="note" x="540" y="360">总占用示意：3B 头部 + 21B buf（11B 已用，10B 预留）= 24B</text>
+</svg>
