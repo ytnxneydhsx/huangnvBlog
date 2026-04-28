@@ -1,0 +1,141 @@
+<svg width="1320" height="860" viewBox="0 0 1320 860" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">B+ 树最终结构示意图</title>
+  <desc id="desc">根索引页位于顶部，内部索引页位于中间，叶子数据页位于底部，叶子页之间通过双向链表连接。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f8fbff"/>
+      <stop offset="45%" stop-color="#fff7ed"/>
+      <stop offset="100%" stop-color="#f5f3ff"/>
+    </linearGradient>
+    <linearGradient id="rootFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffe4e6"/>
+      <stop offset="100%" stop-color="#fbcfe8"/>
+    </linearGradient>
+    <linearGradient id="indexFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#dbeafe"/>
+      <stop offset="100%" stop-color="#e0e7ff"/>
+    </linearGradient>
+    <linearGradient id="leafFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#dcfce7"/>
+      <stop offset="100%" stop-color="#ccfbf1"/>
+    </linearGradient>
+    <linearGradient id="chainFill" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="50%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#64748b" flood-opacity="0.22"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M 1 1 L 11 6 L 1 11 z" fill="#475569"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M 1 1 L 11 6 L 1 11 z" fill="#059669"/>
+    </marker>
+    <marker id="arrowGreenStart" markerWidth="12" markerHeight="12" refX="2" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M 11 1 L 1 6 L 11 11 z" fill="#059669"/>
+    </marker>
+  </defs>
+
+  <rect width="1320" height="860" rx="36" fill="url(#bg)"/>
+  <circle cx="160" cy="110" r="90" fill="#f0abfc" opacity="0.18"/>
+  <circle cx="1180" cy="150" r="120" fill="#38bdf8" opacity="0.14"/>
+  <circle cx="1140" cy="725" r="150" fill="#f97316" opacity="0.12"/>
+
+  <text x="660" y="58" text-anchor="middle" font-family="Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="30" font-weight="800" fill="#111827">B+ Tree Final Layout</text>
+  <text x="660" y="92" text-anchor="middle" font-family="Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="17" fill="#475569">Index pages route queries; leaf pages store full records</text>
+
+  <g font-family="Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+    <rect x="70" y="122" width="1180" height="148" rx="24" fill="#ffffff" opacity="0.48" stroke="#fecdd3" stroke-width="2"/>
+    <rect x="70" y="314" width="1180" height="158" rx="24" fill="#ffffff" opacity="0.50" stroke="#bfdbfe" stroke-width="2"/>
+    <rect x="70" y="526" width="1180" height="198" rx="24" fill="#ffffff" opacity="0.55" stroke="#bbf7d0" stroke-width="2"/>
+
+    <text x="98" y="158" font-size="18" font-weight="700" fill="#be123c">L0: Root index page</text>
+    <text x="98" y="350" font-size="18" font-weight="700" fill="#1d4ed8">L1: Index pages</text>
+    <text x="98" y="562" font-size="18" font-weight="700" fill="#047857">L2: Leaf pages</text>
+  </g>
+
+  <g id="edges" fill="none" stroke="#475569" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)">
+    <path d="M660 218 C600 260 500 288 410 346"/>
+    <path d="M660 218 C720 260 820 288 910 346"/>
+    <path d="M410 414 C360 462 290 500 210 582"/>
+    <path d="M410 414 C455 466 500 500 515 582"/>
+    <path d="M910 414 C865 466 820 500 805 582"/>
+    <path d="M910 414 C960 462 1030 500 1110 582"/>
+  </g>
+
+  <g id="edge-labels" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="700" fill="#334155">
+    <rect x="492" y="258" width="76" height="28" rx="14" fill="#ffffff" opacity="0.82"/>
+    <text x="530" y="278" text-anchor="middle">id &lt; 5</text>
+    <rect x="752" y="258" width="86" height="28" rx="14" fill="#ffffff" opacity="0.82"/>
+    <text x="795" y="278" text-anchor="middle">id >= 5</text>
+    <rect x="272" y="478" width="76" height="28" rx="14" fill="#ffffff" opacity="0.84"/>
+    <text x="310" y="498" text-anchor="middle">id &lt; 3</text>
+    <rect x="468" y="478" width="86" height="28" rx="14" fill="#ffffff" opacity="0.84"/>
+    <text x="511" y="498" text-anchor="middle">id >= 3</text>
+    <rect x="766" y="478" width="76" height="28" rx="14" fill="#ffffff" opacity="0.84"/>
+    <text x="804" y="498" text-anchor="middle">id &lt; 7</text>
+    <rect x="974" y="478" width="86" height="28" rx="14" fill="#ffffff" opacity="0.84"/>
+    <text x="1017" y="498" text-anchor="middle">id >= 7</text>
+  </g>
+
+  <g id="nodes" font-family="Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" filter="url(#shadow)">
+    <g transform="translate(560 150)">
+      <rect width="200" height="80" rx="18" fill="url(#rootFill)" stroke="#e11d48" stroke-width="3"/>
+      <text x="100" y="32" text-anchor="middle" font-size="15" font-weight="700" fill="#9f1239">ROOT INDEX</text>
+      <text x="100" y="60" text-anchor="middle" font-size="30" font-weight="800" fill="#881337">key: 5</text>
+    </g>
+
+    <g transform="translate(300 342)">
+      <rect width="220" height="84" rx="18" fill="url(#indexFill)" stroke="#2563eb" stroke-width="3"/>
+      <text x="110" y="34" text-anchor="middle" font-size="15" font-weight="700" fill="#1d4ed8">INTERNAL INDEX</text>
+      <text x="110" y="64" text-anchor="middle" font-size="30" font-weight="800" fill="#1e3a8a">key: 3</text>
+    </g>
+
+    <g transform="translate(800 342)">
+      <rect width="220" height="84" rx="18" fill="url(#indexFill)" stroke="#2563eb" stroke-width="3"/>
+      <text x="110" y="34" text-anchor="middle" font-size="15" font-weight="700" fill="#1d4ed8">INTERNAL INDEX</text>
+      <text x="110" y="64" text-anchor="middle" font-size="30" font-weight="800" fill="#1e3a8a">key: 7</text>
+    </g>
+
+    <g transform="translate(100 584)">
+      <rect width="220" height="96" rx="18" fill="url(#leafFill)" stroke="#059669" stroke-width="3"/>
+      <text x="110" y="30" text-anchor="middle" font-size="15" font-weight="700" fill="#047857">LEAF DATA PAGE</text>
+      <text x="110" y="58" text-anchor="middle" font-size="22" font-weight="800" fill="#064e3b">1 / 8000</text>
+      <text x="110" y="84" text-anchor="middle" font-size="22" font-weight="800" fill="#064e3b">2 / 12000</text>
+    </g>
+
+    <g transform="translate(405 584)">
+      <rect width="220" height="96" rx="18" fill="url(#leafFill)" stroke="#059669" stroke-width="3"/>
+      <text x="110" y="30" text-anchor="middle" font-size="15" font-weight="700" fill="#047857">LEAF DATA PAGE</text>
+      <text x="110" y="58" text-anchor="middle" font-size="22" font-weight="800" fill="#064e3b">3 / 9000</text>
+      <text x="110" y="84" text-anchor="middle" font-size="22" font-weight="800" fill="#064e3b">4 / 15000</text>
+    </g>
+
+    <g transform="translate(695 584)">
+      <rect width="220" height="96" rx="18" fill="url(#leafFill)" stroke="#059669" stroke-width="3"/>
+      <text x="110" y="30" text-anchor="middle" font-size="15" font-weight="700" fill="#047857">LEAF DATA PAGE</text>
+      <text x="110" y="58" text-anchor="middle" font-size="22" font-weight="800" fill="#064e3b">5 / 7000</text>
+      <text x="110" y="84" text-anchor="middle" font-size="22" font-weight="800" fill="#064e3b">6 / 11000</text>
+    </g>
+
+    <g transform="translate(1000 584)">
+      <rect width="220" height="96" rx="18" fill="url(#leafFill)" stroke="#059669" stroke-width="3"/>
+      <text x="110" y="30" text-anchor="middle" font-size="15" font-weight="700" fill="#047857">LEAF DATA PAGE</text>
+      <text x="110" y="68" text-anchor="middle" font-size="24" font-weight="800" fill="#064e3b">7 / 9500</text>
+    </g>
+  </g>
+
+  <g id="leaf-chain" fill="none" stroke="url(#chainFill)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#arrowGreenStart)" marker-end="url(#arrowGreen)">
+    <path d="M320 632 C350 614 374 614 405 632"/>
+    <path d="M625 632 C655 614 665 614 695 632"/>
+    <path d="M915 632 C945 614 970 614 1000 632"/>
+  </g>
+
+  <g font-family="Inter, system-ui, sans-serif">
+    <rect x="360" y="746" width="600" height="54" rx="27" fill="#ffffff" opacity="0.84" stroke="#99f6e4" stroke-width="2"/>
+    <rect x="386" y="765" width="150" height="16" rx="8" fill="url(#chainFill)"/>
+    <text x="560" y="779" font-size="17" font-weight="700" fill="#0f766e">Leaf pages form a doubly linked list for range scans</text>
+  </g>
+</svg>
